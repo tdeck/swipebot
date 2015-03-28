@@ -12,13 +12,18 @@ class SqliteClient(SwipeClient):
         self.connection.execute("""
                 create table if not exists """ + self.post_table + """ (
                     id integer primary key,
-                    slug text,
+                    slug text unique,
                     title text,
                     hash text,
                     time integer,
                     last_update integer
                 )
             """)
+        self.connection.execute(
+            'create index if not exists ' +
+                self.post_table + '_time_index' +
+            ' on ' + self.post_table + ' (time)'
+        );
         self.connection.execute("""
                 create table if not exists """ + self.rating_table + """ (
                     post_id integer,
