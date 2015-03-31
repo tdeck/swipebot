@@ -26,9 +26,12 @@ class SwipeClient(Thread):
                     self.insert_rating(id, rating)
         
             # Wait the rest of the poll period if there's still time
-            if time() < next_poll:
-                sleep(next_poll -time())
-        
+            margin = next_poll - time()
+            if margin > 0:
+                print "Finished poll with", margin, "seconds to spare"
+                sleep(margin)
+            else:
+                print "Ran over time by", -margin, "seconds"
 
     def insert_listing(self, listing):
         """
